@@ -1,0 +1,30 @@
+{
+  "name": "ai-chronicle",
+  "version": "1.0.0",
+  "private": false,
+  "description": "AI 大事记 · 2022–2026：用普通人看得懂的语言讲清大模型时代，双线时间线 + 划词 AI 解释，零依赖静态站点",
+  "keywords": [
+    "ai",
+    "timeline",
+    "llm",
+    "history",
+    "科普",
+    "vanilla-js",
+    "static-site"
+  ],
+  "author": "黄宇浩 · 复旦大学未来信息创新学院",
+  "license": "SEE LICENSE IN LICENSE",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8787",
+    "serve": "python3 -m http.server 8787",
+    "build": "node tools/build-data.mjs",
+    "check": "node tools/probe.mjs --url=http://127.0.0.1:8787/index.html --eval-file=tools/checks/interactions.js --wait=1800 --full=false",
+    "check:ai": "node tools/probe.mjs --url=http://127.0.0.1:8787/index.html --full=false --pre-eval=\"localStorage.setItem('ai-chronicle.ai-settings', JSON.stringify({base:'http://127.0.0.1:8899/v1',model:'deepseek-chat',key:'sk-test',preset:'custom'}))\" --eval-file=tools/checks/ai-path.js",
+    "mock-ai": "node tools/mock-ai-server.mjs 8899",
+    "shot": "node tools/probe.mjs --url=http://127.0.0.1:8787/index.html --out=/tmp/ai-chronicle.png --width=1440 --height=1000 --full=false"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

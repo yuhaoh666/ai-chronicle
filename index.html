@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="AI大事记：用普通人能看懂的语言，讲清 2022 到 2026 年人工智能到底发生了什么。技术线（蓝）与社会商业线（橙）双线并行，支持搜索、划词解释。">
+<meta name="author" content="黄宇浩 · 复旦大学未来信息创新学院">
+<meta name="color-scheme" content="light dark">
+<title>AI 大事记 · 2022–2026 大模型时代全记录</title>
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<script>
+/* 在首次绘制前定好主题，避免闪一下白/黑 */
+(function () {
+  var t = null;
+  try {
+    var raw = localStorage.getItem('ai-chronicle.theme');
+    t = raw === null ? null : JSON.parse(raw);
+  } catch (e) { t = null; }
+  if (t !== 'dark' && t !== 'light') {
+    t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+</head>
+<body>
+
+<!-- 背景装饰层 -->
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-aurora"></div>
+  <div class="bg-grid"></div>
+</div>
+
+<a class="skip-link" href="#timeline">跳到时间线</a>
+
+<!-- ============ 头部 ============ -->
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <p class="hero-kicker">给完全不懂技术的人看的 AI 编年史</p>
+    <h1 class="hero-title">
+      <span class="grad-text">AI 大事记</span>
+      <span class="hero-years">2022 → 2026</span>
+    </h1>
+    <p class="hero-sub">
+      从一台会聊天的机器，到会看图、会推理、会自己干活的助手——
+      这条线上每一个蓝点是一次技术突破，每一个橙点是一次商业或社会震动。
+      点开任意一张卡片，里面没有一个术语是不解释的。
+    </p>
+    <div class="hero-stats" id="heroStats">
+      <div class="stat"><b id="statEvents">—</b><span>条大事件</span></div>
+      <div class="stat"><b id="statTech">—</b><span>条技术线</span></div>
+      <div class="stat"><b id="statSocial">—</b><span>条社会线</span></div>
+      <div class="stat"><b id="statConcepts">—</b><span>个术语翻译</span></div>
+    </div>
+    <div class="hero-tips">
+      <span class="tip"><i class="dot dot-tech"></i>技术线 · 模型与算法</span>
+      <span class="tip"><i class="dot dot-social"></i>社会线 · 公司、钱与规则</span>
+      <span class="tip tip-select">✍️ 用鼠标划选卡片里的任意一句话，可以点「解释」</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 顶部时间轴导航 ============ -->
+<nav class="nav" id="nav" aria-label="时间轴导航">
+  <div class="nav-inner">
+    <div class="nav-head">
+      <span class="nav-cursor" id="navCursor">前史</span>
+      <div class="nav-right">
+        <span class="nav-hint">拖动滑块，或点击年份跳转</span>
+        <button class="theme-toggle" id="themeToggle" type="button"
+                aria-label="切换深浅色主题" title="切换深浅色主题">🌙</button>
+      </div>
+    </div>
+
+    <div class="track" id="track" role="slider" tabindex="0"
+         aria-label="时间轴滑块" aria-valuemin="1956" aria-valuemax="2026" aria-valuenow="2026">
+      <div class="track-rail"></div>
+      <div class="track-fill" id="trackFill"></div>
+
+      <!-- AI 能力增长曲线（指数形状） -->
+      <svg class="track-curve" id="trackCurve" viewBox="0 0 1000 60"
+           preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="curveGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#1e3a8a"/>
+            <stop offset="30%"  stop-color="#2f7df6"/>
+            <stop offset="62%"  stop-color="#7c5cff"/>
+            <stop offset="100%" stop-color="#ff9f43"/>
+          </linearGradient>
+          <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#6d3ff0" stop-opacity=".26"/>
+            <stop offset="100%" stop-color="#6d3ff0" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path id="curveArea" fill="url(#areaGrad)" stroke="none"/>
+        <path id="curvePath" fill="none" stroke="url(#curveGrad)" stroke-width="2.5"
+              stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      </svg>
+
+      <div class="track-ticks" id="trackTicks"></div>
+      <div class="track-thumb" id="trackThumb" aria-hidden="true"><span></span></div>
+    </div>
+
+    <div class="track-legend" id="trackLegend"></div>
+  </div>
+</nav>
+
+<!-- ============ 工具条：搜索与筛选 ============ -->
+<div class="toolbar" id="toolbar">
+  <div class="toolbar-inner">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>
+      </svg>
+      <input id="searchInput" type="search" autocomplete="off" spellcheck="false"
+             placeholder="搜索事件、公司、术语…（按 / 键快速定位）" aria-label="搜索事件">
+      <button class="search-clear" id="searchClear" type="button" hidden aria-label="清空搜索">✕</button>
+    </div>
+
+    <div class="chips" role="group" aria-label="按线索筛选">
+      <button class="chip is-active" data-filter="all" type="button">全部</button>
+      <button class="chip chip-tech" data-filter="technical" type="button">技术线</button>
+      <button class="chip chip-social" data-filter="social" type="button">社会线</button>
+    </div>
+
+    <div class="toolbar-actions">
+      <button class="ghost-btn" id="expandAllBtn" type="button">全部展开</button>
+      <button class="ghost-btn" id="collapseAllBtn" type="button">全部折叠</button>
+    </div>
+
+    <div class="result-bar" id="resultBar" hidden>
+      <span id="resultText"></span>
+      <button class="link-btn" id="resultReset" type="button">重置</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 主体时间线 ============ -->
+<main class="timeline" id="timeline">
+  <div class="timeline-spine" aria-hidden="true"></div>
+  <noscript><p class="empty-note">这个网站需要开启 JavaScript 才能显示时间线。</p></noscript>
+</main>
+
+<div class="empty-note" id="emptyNote" hidden>
+  <b>没有找到匹配的事件</b>
+  <span>换个关键词试试，比如「芯片」「开源」「Agent」「融资」。</span>
+</div>
+
+<!-- ============ 术语总表 ============ -->
+<section class="glossary" id="glossary">
+  <details class="glossary-details">
+    <summary>
+      <span class="glossary-title">📖 术语总表</span>
+      <span class="glossary-sub" id="glossaryCount"></span>
+    </summary>
+    <div class="glossary-body">
+      <p class="glossary-note">
+        时间线上出现的每一个术语都会在这里汇总。每一条解释都遵守同一条规矩：
+        不出现另一个没被解释过的术语，并且一定给一个生活里的类比。
+      </p>
+      <div class="glossary-grid" id="glossaryGrid"></div>
+    </div>
+  </details>
+</section>
+
+<!-- ============ 页脚 ============ -->
+<footer class="site-foot">
+  <div class="foot-inner">
+    <p class="foot-line">
+      <b>AI 大事记</b> · 收录 <span id="footCount">—</span> 条事件，时间跨度 1956 – 2026。
+    </p>
+    <p class="foot-line muted">
+      内容依据公开报道整理，每条事件都附有来源链接。2025–2026 年的事件均经联网核实；
+      如果你发现日期或事实有误，以卡片里的来源为准。
+    </p>
+    <p class="foot-line muted small">
+      划词解释功能默认使用「本地术语词典」离线回答；在
+      <button class="link-btn" id="footSettings" type="button">AI 设置</button>
+      里填入任意 OpenAI 兼容接口，就能换成真正的 AI 来回答。
+    </p>
+    <p class="foot-line credit">
+      <span>作者 <b>黄宇浩</b> · 复旦大学未来信息创新学院</span>
+      <span class="credit-sep">|</span>
+      <span>代码 MIT · 文字内容 CC BY 4.0</span>
+    </p>
+  </div>
+</footer>
+
+<div class="to-top" id="toTop" hidden>
+  <button type="button" aria-label="回到顶部">↑</button>
+</div>
+
+<!-- ============ 脚本 ============ -->
+<script src="assets/js/data/events.js"></script>
+<script src="assets/js/data/glossary.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/timeline.js"></script>
+<script src="assets/js/search.js"></script>
+<script src="assets/js/explainer.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

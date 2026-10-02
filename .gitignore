@@ -1,0 +1,35 @@
+# ---- macOS ----
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ---- Windows ----
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ---- 编辑器 / IDE ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---- Node（本项目无依赖，只是防止误装）----
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+
+# ---- 本项目运行时产物 ----
+# 无头浏览器探针的临时目录与截图
+/.probe-*/
+/tools/**/*.log
+/screenshots/
+
+# 本地 AI 接口配置（含 API Key，绝不入库）
+.env
+.env.local
