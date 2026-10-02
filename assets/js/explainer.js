@@ -172,10 +172,12 @@
       return this.data;
     },
     get configured() {
-      return !!(this.data.base && this.data.model && this.data.key);
+      // 因为后端代理已经注入了 Key，前端不再需要检查 key
+      return !!(this.data.base && this.data.model);
     },
     endpoint: function () {
-      return String(this.data.base || '').replace(/\/+$/, '') + '/chat/completions';
+      // 直接返回 Worker 地址，Worker 内部会转发到 /chat/completions
+      return String(this.data.base || '').replace(/\/+$/, '');
     }
   };
 
@@ -202,8 +204,7 @@
     return fetch(Settings.endpoint(), {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + s.key
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(body),
       signal: ctrl.signal
@@ -554,9 +555,9 @@
       '<div class="p-foot">Enter 发送 · Shift + Enter 换行 · Esc 关闭 · 拖动标题栏可移动</div>',
       '<div class="settings" data-settings>',
       '  <div class="fld"><label>接口预设</label><select data-f="preset"></select></div>',
-      '  <div class="fld"><label>接口地址（Base URL）</label><input data-f="base" placeholder="https://api.deepseek.com/v1" spellcheck="false"></div>',
+      '  <div class="fld"><label>接口地址（Cloudflare Worker 地址）</label><input data-f="base" placeholder="https://deepseek-proxy.yuhaoh500.workers.dev" spellcheck="false"></div>',
       '  <div class="fld"><label>模型名</label><input data-f="model" placeholder="deepseek-chat" spellcheck="false"></div>',
-      '  <div class="fld"><label>API Key</label><input data-f="key" type="password" placeholder="sk-..." spellcheck="false"></div>',
+      '  <!-- API Key 已安全存放在 Cloudflare 后端，这里不再显示输入框 -->',
       '  <p class="hint">Key 只保存在你自己的浏览器里（localStorage），不会上传到任何第三方服务器，' +
       '也不会写进这个网站的代码。请求直接由你的浏览器发往你填的接口。</p>',
       '  <p class="hint">若浏览器提示跨域（CORS）失败：请用本地 HTTP 服务打开本页（见 README），' +
