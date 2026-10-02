@@ -29,21 +29,11 @@
 
 ---
 
-## 一、怎么打开
-
-### 推荐：用本地 HTTP 服务打开
+## 一、怎么打开,直接浏览器打开网站
 
 ```bash
-cd "AI大事记网站搭建"
-python3 -m http.server 8787
-# 然后浏览器访问 http://127.0.0.1:8787/
+https://yuhaoh666.github.io/ai-chronicle/
 ```
-
-**为什么推荐这个方式**：划词解释功能要 `fetch` 调用 AI 接口。用 `file://` 直接双击打开时，
-浏览器会把它当成"无来源"的页面，多数 AI 接口会因此拒绝跨域请求。
-用 `http://127.0.0.1` 打开就没有这个问题。
-
-直接双击 `index.html` 也能看，只是划词解释会自动退化成**本地术语词典模式**（见第四节）。
 
 ---
 
@@ -290,37 +280,7 @@ node tools/probe.mjs --url=... --eval="return document.querySelectorAll('.event'
 
 ---
 
-## 八、发布到 GitHub
-
-仓库根目录就是站点根目录，**不需要任何构建步骤**，上传即可运行。
-
-### 1. 推上去
-
-```bash
-cd "AI大事记网站搭建"
-git init -b main
-git add -A
-git commit -m "feat: AI 大事记 2022–2026 双线时间线网站"
-git remote add origin git@github.com:yuhaoh666/ai-chronicle.git
-git push -u origin main
-```
-
-### 2. 免费上线（GitHub Pages）
-
-推完之后：仓库 **Settings → Pages → Build and deployment**
-→ Source 选 `Deploy from a branch` → Branch 选 `main` / `(root)` → Save。
-
-一分钟左右后访问 `https://yuhaoh666.github.io/ai-chronicle/` 即可。
-
-仓库里已经放了 `.nojekyll`，避免 GitHub 的 Jekyll 处理后端误伤静态文件。
-
-> 注意：GitHub Pages 是 HTTPS 的，站点里的划词 AI 解释要调用外部 AI 接口时，
-> 接口必须支持跨域（CORS）。用不了的话，选择「本地术语词典」模式一样能跑，
-> 或者自建一个转发代理（见第四节）。
-
----
-
-## 九、作者与许可
+## 八、作者与许可
 
 **作者：黄宇浩 · 复旦大学未来信息创新学院**
 
